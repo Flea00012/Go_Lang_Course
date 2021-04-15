@@ -1,12 +1,14 @@
 package main
 
-import ("fmt"
-"time"
-"strings"
-"io/ioutil"
-"log"
-"os"
-"math/rand")
+import (
+	"fmt"
+	"io/ioutil"
+	"log"
+	"math/rand"
+	"os"
+	"strings"
+	"time"
+)
 
 //create a new type of "deck"
 //which is a slice of strings
