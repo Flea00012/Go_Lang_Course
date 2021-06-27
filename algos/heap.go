@@ -50,4 +50,5 @@ func main() {
 	for intHeap.Len() > 0 {
 		fmt.Printf("%d \n", heap.Pop(intHeap))
 	}
+
 }
