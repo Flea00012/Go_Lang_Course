@@ -6,7 +6,7 @@ import (
 
 type Call struct {
 	callerNumber float64
-	duration     int
+	duration     int64
 }
 
 type CallCenter struct {
@@ -21,7 +21,20 @@ func NewCallCenter() *CallCenter {
 	}
 }
 
-func (callCenter CallCenter) addToQueue(call Call) {
+func (c CallCenter) HandleCall(operator FirstLineSupport, call Call ) Call {
+	if operator.OnLine(){
+		callPickedUp := c.callsInQueue[len(c.callsInQueue)-1]
+		newQueue := make([]Call, len(c.callsInQueue) - 1)
+		copy(newQueue ,c.callsInQueue[len(c.callsInQueue)-1])
+		fmt.Println("%s handled the call from %s", operator, call.callerNumber)
+		return call
+	}
+	fmt.Println("call from s% not handled and added to Queue", call.callerNumber)
+	c.AddToQueue(call)
+	return call
+}
+
+func (callCenter CallCenter) AddToQueue(call Call) {
 	if callCenter.operator.OnLine() {
 		callCenter.callsInQueue = append(callCenter.callsInQueue, call)
 	}
