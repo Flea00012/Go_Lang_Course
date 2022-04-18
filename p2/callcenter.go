@@ -21,13 +21,13 @@ func NewCallCenter() *CallCenter {
 	}
 }
 
-func (c CallCenter) HandleCall(operator FirstLineSupport, call Call ) Call, []Call {
-	if operator.OnLine(){
+func (c CallCenter) HandleCall(operator FirstLineSupport, call Call) (Call, []Call) {
+	if operator.OnLine() {
 		callPickedUp := c.callsInQueue[len(c.callsInQueue)-1]
-		newQueue := make([]Call, len(c.callsInQueue) - 1)
-		append(newQueue, c.callsInQueue...)
-		fmt.Println("%s handled the call from %s", operator, call.callerNumber)
-		return callPickedUp, newQueue
+		newQueue := make([]Call, len(c.callsInQueue)-1)
+		newQueue2 := append(newQueue, c.callsInQueue[len(c.callsInQueue)-1])
+		// fmt.Println("%s handled the call from %s", operator, call.callerNumber)
+		return callPickedUp, newQueue2
 	}
 	fmt.Println("call from s% not handled and added to Queue", call.callerNumber)
 	c.AddToQueue(call)
@@ -51,5 +51,11 @@ func (operator FirstLineSupport) Away() bool {
 }
 
 func main() {
-	fmt.Println("lee is online: ")
+	// fmt.Println("lee is online: ")
+	var lee FirstLineSupport
+	lee = "lee"
+	call := Call{00001, 1}
+	callCenter := NewCallCenter()
+	call, calls := callCenter.HandleCall(lee, call)
+	fmt.Println("the calls: ", calls)
 }
