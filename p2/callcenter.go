@@ -21,17 +21,17 @@ func NewCallCenter() *CallCenter {
 	}
 }
 
-func (c CallCenter) HandleCall(operator FirstLineSupport, call Call ) Call {
+func (c CallCenter) HandleCall(operator FirstLineSupport, call Call ) Call, []Call {
 	if operator.OnLine(){
 		callPickedUp := c.callsInQueue[len(c.callsInQueue)-1]
 		newQueue := make([]Call, len(c.callsInQueue) - 1)
-		copy(newQueue ,c.callsInQueue[len(c.callsInQueue)-1])
+		append(newQueue, c.callsInQueue...)
 		fmt.Println("%s handled the call from %s", operator, call.callerNumber)
-		return call
+		return callPickedUp, newQueue
 	}
 	fmt.Println("call from s% not handled and added to Queue", call.callerNumber)
 	c.AddToQueue(call)
-	return call
+	return call, c.callsInQueue
 }
 
 func (callCenter CallCenter) AddToQueue(call Call) {
