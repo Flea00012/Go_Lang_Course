@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"sync"
 )
 
 type Call struct {
@@ -11,39 +10,33 @@ type Call struct {
 }
 
 type CallCenter struct {
-	callsInQueue map[float64]Call
+	callsInQueue []Call
 	operator     FirstLineSupport
 }
 
 func NewCallCenter() *CallCenter {
 	return &CallCenter{
-		callsInQueue: make(map[string]Call),
-		operator: &FirstLineSupport{
-			name: "lee",
-		}
+		callsInQueue: make([]Call, 0, 10),
+		operator:     "lee",
 	}
 }
 
 func (callCenter CallCenter) addToQueue(call Call) {
 	if callCenter.operator.OnLine() {
-		callCenter.callsInQueue = make(call.callerNumber, call)
+		callCenter.callsInQueue = append(callCenter.callsInQueue, call)
 	}
 }
 
-type FirstLineSupport struct {
-	name string
-}
+type FirstLineSupport string
 
 func (operator FirstLineSupport) OnLine() bool {
 	return true
 }
 
-func (operator FirstLineSupport) away() bool {
+func (operator FirstLineSupport) Away() bool {
 	return false
 }
 
 func main() {
-	var num int
-	num = 2
-	fmt.Printf("call handled: %d", num)
+	fmt.Println("lee is online: ")
 }
