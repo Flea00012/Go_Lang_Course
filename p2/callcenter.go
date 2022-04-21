@@ -22,22 +22,14 @@ func NewCallCenter() *CallCenter {
 }
 
 func (c CallCenter) HandleCall(operator FirstLineSupport, call Call) (Call, []Call) {
-	if operator.Away() {
-		callPickedUp := c.callsInQueue[len(c.callsInQueue)-1]
-		newQueue := make([]Call, len(c.callsInQueue)-1)
-		newQueue2 := append(newQueue, c.callsInQueue[len(c.callsInQueue)-1])
-		// fmt.Println("%s handled the call from %s", operator, call.callerNumber)
-		return callPickedUp, newQueue2
+	if operator.OnLine() {
+		c.AddToQueue(call)
 	}
-	fmt.Println("call from s% not handled and added to Queue", call.callerNumber)
-	c.AddToQueue(call)
 	return call, c.callsInQueue
 }
 
 func (callCenter CallCenter) AddToQueue(call Call) {
-	if callCenter.operator.OnLine() {
-		callCenter.callsInQueue = append(callCenter.callsInQueue, call)
-	}
+	callCenter.callsInQueue = append(callCenter.callsInQueue, call)
 }
 
 type FirstLineSupport string
@@ -51,13 +43,12 @@ func (operator FirstLineSupport) Away() bool {
 }
 
 func main() {
-	// fmt.Println("lee is online: ")
 	var lee FirstLineSupport
 	lee = "lee"
 	call := Call{00001, 1}
 	callCenter := NewCallCenter()
-	fmt.Printf("the calls: %T to %T at center: %T", call, lee, callCenter)
-	
-	call, calls := callCenter.HandleCall(lee, call)
-	fmt.Printf("the calls handled: %T", calls)
+	fmt.Printf("the calls: %T to %T at call-center: %T\n", call.callerNumber, lee, callCenter.callsInQueue)
+
+	_, calls := callCenter.HandleCall(lee, call)
+	fmt.Printf("the calls handled: %T\n", calls)
 }
