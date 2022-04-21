@@ -47,8 +47,8 @@ func main() {
 	lee = "lee"
 	call := Call{00001, 1}
 	callCenter := NewCallCenter()
-	fmt.Printf("the calls: %T to %T at call-center: %T\n", call.callerNumber, lee, callCenter.callsInQueue)
+	fmt.Printf("the calls: %+v to %+v at call-center: %#v\n", call.callerNumber, lee, callCenter.callsInQueue)
 
 	_, calls := callCenter.HandleCall(lee, call)
-	fmt.Printf("the calls handled: %T\n", calls)
+	fmt.Printf("the calls handled: %#v\n", calls)
 }
