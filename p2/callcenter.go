@@ -22,7 +22,7 @@ func NewCallCenter() *CallCenter {
 }
 
 func (c CallCenter) HandleCall(operator FirstLineSupport, call Call) (Call, []Call) {
-	if operator.OnLine() {
+	if operator.Away() {
 		callPickedUp := c.callsInQueue[len(c.callsInQueue)-1]
 		newQueue := make([]Call, len(c.callsInQueue)-1)
 		newQueue2 := append(newQueue, c.callsInQueue[len(c.callsInQueue)-1])
@@ -56,6 +56,8 @@ func main() {
 	lee = "lee"
 	call := Call{00001, 1}
 	callCenter := NewCallCenter()
+	fmt.Printf("the calls: %T to %T at center: %T", call, lee, callCenter)
+	
 	call, calls := callCenter.HandleCall(lee, call)
-	fmt.Println("the calls: ", calls)
+	fmt.Printf("the calls handled: %T", calls)
 }
