@@ -5,7 +5,7 @@ import (
 )
 
 type Call struct {
-	callerNumber float64
+	callerNumber int64
 	duration     int64
 }
 
@@ -21,11 +21,12 @@ func NewCallCenter() *CallCenter {
 	}
 }
 
-func (c CallCenter) HandleCall(operator FirstLineSupport, call Call) (Call, []Call) {
-	if operator.OnLine() {
+func (c CallCenter) HandleCall(operator FirstLineSupport, call Call)  {
+	if operator.Away() {
 		c.AddToQueue(call)
+	} else {
+		fmt.Printf("call: %d has been handled by: %s\n", call.callerNumber, c.operator)
 	}
-	return call, c.callsInQueue
 }
 
 func (callCenter CallCenter) AddToQueue(call Call) {
@@ -45,10 +46,14 @@ func (operator FirstLineSupport) Away() bool {
 func main() {
 	var lee FirstLineSupport
 	lee = "lee"
-	call := Call{00001, 1}
+	call1 := Call{00001, 1}
+	call2 := Call{00002, 1}
+	call3 := Call{00003, 1}
 	callCenter := NewCallCenter()
-	fmt.Printf("the calls: %+v to %+v at call-center: %#v\n", call.callerNumber, lee, callCenter.callsInQueue)
+	fmt.Printf("the calls: %+v to %+v at call-center: %#v\n", call1.callerNumber, lee, callCenter.callsInQueue)
 
-	_, calls := callCenter.HandleCall(lee, call)
-	fmt.Printf("the calls handled: %#v\n", calls)
+	callCenter.HandleCall(lee, call1)
+	callCenter.HandleCall(lee, call2)
+	callCenter.HandleCall(lee, call3)
+	fmt.Printf("the calls handled: %#v\n", &callCenter.callsInQueue)
 }
