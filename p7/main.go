@@ -17,6 +17,15 @@ func main() {
 	bytesReadFrom, err := ioutil.ReadAll(conn)
 	if err != nil {
 		log.Println(err)
-	}
+	}	
 	fmt.Print(string(bytesReadFrom))
+
+	accConn, err := net.Dial("tcp", "localhost: 8001")
+	if err != nil {
+		log.Panic(err)
+	}
+	defer accConn.Close()
+
+	fmt.Fprintln(accConn,"call into tcp server")
+
 }

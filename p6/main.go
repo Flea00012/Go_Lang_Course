@@ -21,7 +21,7 @@ func main() {
 		if err != nil {
 			log.Printf("error: %e", err)
 		}
-		
+	
 		io.WriteString(acc, "hello from outside lambda\n")
 		go handleConnection(acc)
 		go func() {
