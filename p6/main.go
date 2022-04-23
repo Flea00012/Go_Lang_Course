@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"log"
 	"net"
 	"time"
@@ -20,13 +21,18 @@ func main() {
 		if err != nil {
 			log.Printf("error: %e", err)
 		}
+		
+		io.WriteString(acc, "hello from outside lambda\n")
 		go handleConnection(acc)
+		go func() {
+			io.WriteString(acc, "hello from inside lambda\n")
+		}()
 	}
 
 }
 
 func handleConnection(acc net.Conn) {
-	err := acc.SetDeadline(time.Now().Add(10*time.Second))
+	err := acc.SetDeadline(time.Now().Add(2 * time.Second))
 	if err != nil {
 		log.Println("Connection timeout")
 	}
