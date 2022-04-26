@@ -13,16 +13,10 @@ func main() {
 		return
 	}
 
-	// b, err := ioutil.ReadFile(os.Args[1])
-
-	// if err != nil {
-	// 	log.Panic(err)
-	// }
-	// fmt.Println(string(b))
-
 	file, err := os.Open(os.Args[1])
 	if err != nil {
 		log.Panic(err)
+		return
 	}
 	defer file.Close()
 
@@ -30,9 +24,9 @@ func main() {
 		b = make([]byte, 16)
 	)
 	for n := 0; err == nil; {
-		n, err := file.Read(b)
+		n, err = file.Read(b)
 		if err == nil {
-			fmt.Println(string(b[:n]))
+			fmt.Print(string(b[:n]))
 		}
 	}
 	if err != nil && err != io.EOF {

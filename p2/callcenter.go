@@ -21,7 +21,7 @@ func NewCallCenter() *CallCenter {
 	}
 }
 
-func (c *CallCenter) HandleCall(operator FirstLineSupport, call Call)  {
+func (c *CallCenter) HandleCall(operator FirstLineSupport, call Call) {
 	if operator.Away() {
 		c.AddToQueue(call)
 	} else {
@@ -61,7 +61,7 @@ func main() {
 	lee.OperatorStatusChanged(lee.OnLine())
 	call3 := &Call{1431331, 1}
 	callCenter := *NewCallCenter()
-	fmt.Printf("the calls: %+v to %+v at call-center: %#v\n", call1.callerNumber, lee, callCenter.callsInQueue)
+	fmt.Printf("the call1: %+v to %+v at call-center: %#v\n", call1.callerNumber, lee, callCenter.callsInQueue)
 
 	callCenter.HandleCall(lee, *call1)
 	callCenter.HandleCall(lee, *call2)
