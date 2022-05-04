@@ -10,13 +10,13 @@ type Call struct {
 }
 
 type CallCenter struct {
-	callsInQueue []Call
+	callsInQueue map[int64]string
 	operator     FirstLineSupport
 }
 
 func NewCallCenter() *CallCenter {
 	return &CallCenter{
-		callsInQueue: make([]Call, 0, 10),
+		callsInQueue: make(map[int64]string),
 		operator:     "lee",
 	}
 }
@@ -24,13 +24,18 @@ func NewCallCenter() *CallCenter {
 func (c *CallCenter) HandleCall(operator FirstLineSupport, call Call) {
 	if operator.Away() {
 		c.AddToQueue(call)
+		fmt.Printf("call: %d is in the waiting line", call.callerNumber)
 	} else {
 		fmt.Printf("call: %d has been handled by: %s\n", call.callerNumber, c.operator)
 	}
 }
 
 func (callCenter *CallCenter) AddToQueue(call Call) {
-	callCenter.callsInQueue = append(callCenter.callsInQueue, call)
+	keys := make([]int64, 0, len(callCenter.callsInQueue))
+	for k := range callCenter.callsInQueue {
+		keys = append(keys, k)
+	}
+
 }
 
 type FirstLineSupport string
@@ -66,5 +71,5 @@ func main() {
 	callCenter.HandleCall(lee, *call1)
 	callCenter.HandleCall(lee, *call2)
 	callCenter.HandleCall(lee, *call3)
-	fmt.Printf("the calls handled: %#v\n", &callCenter.callsInQueue)
+	fmt.Printf("the calls handled: %d\n", callCenter.callsInQueue)
 }
