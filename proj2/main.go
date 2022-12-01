@@ -4,7 +4,11 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"time"
+
 	"github.com/go-sql-driver/mysql"
+
+	"github.com/libp2p/go-libp2p"
 )
 
 func main() {
@@ -32,5 +36,13 @@ func main() {
 	if rows.Err() != nil {
 		log.Panic(err)
 	}
+
+	db.SetConnMaxLifetime(time.Minute * 3)
+	db.SetMaxOpenConns(10)
+	db.SetMaxIdleConns(10)
+
+	go func ()  {
+		
+	}()
 	
 }
