@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/awoodbeck/gnp/ch13/instrumentation/metrics"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 var (
@@ -62,8 +63,8 @@ func main()  {
 	rand.Seed(time.Now().UnixNano())
 
 	mux := http.NewServeMux()
-	mux.Handle("/metrics/", promhttp.Handler)
-	if err := newHTTPServer(*metricsAddr, mux, nil)
+	// mux.Handle("/metrics/", promhttp.Handler)
+	err := newHTTPServer(*metricsAddr, mux, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
