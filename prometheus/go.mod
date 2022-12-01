@@ -2,8 +2,9 @@ module tester.com/test
 
 go 1.18
 
+require github.com/awoodbeck/gnp v0.0.0-20220823170205-9453334d3366
+
 require (
-	github.com/awoodbeck/gnp v0.0.0-20220823170205-9453334d3366 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/go-kit/kit v0.10.0 // indirect

@@ -2,17 +2,18 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
+	"math/rand"
 	"net"
 	"net/http"
 	"time"
 
 	"github.com/awoodbeck/gnp/ch13/instrumentation/metrics"
-	"github.com/awoodbeck/gnp/ch13/instrumentation/promhttp"
 )
 
 var (
-	metricAddr = flag.String("metrics", "127.0.0.1:8081", "metrics listen address")
+	metricsAddr = flag.String("metrics", "127.0.0.1:8081", "metrics listen address")
 	webAddr    = flag.String("web", "127.0.0.1:8082", "web listen address")
 )
 
@@ -42,7 +43,7 @@ func newHTTPServer(addr string, mux http.Handler, stateFunc func(net.Conn, http.
 	}
 
 	go func() {
-		log.Fatal(srv.Serve(1))
+		log.Fatal(srv.Serve(l))
 	}()
 	return nil
 }
@@ -54,4 +55,17 @@ func connStateMetrics(_ net.Conn, state http.ConnState) {
 	case http.StateClosed:
 		metrics.OpenConnections.Add(-1)
 	}
+}
+
+func main()  {
+	flag.Parse()
+	rand.Seed(time.Now().UnixNano())
+
+	mux := http.NewServeMux()
+	mux.Handle("/metrics/", promhttp.Handler)
+	if err := newHTTPServer(*metricsAddr, mux, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("Metrics listening on %q ...\n", *metricsAddr)
 }
