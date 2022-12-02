@@ -37,7 +37,9 @@ func TestSimpleHTTPServer(t *testing.T){
 		response string
 	}{
 		{http.MethodGet, nil, http.StatusOK, "Hello friend!"},
-		{http.MethodPost, bytes.NewBufferString("<world>"), http.StatusMethodNotAllowed, ""},
+		{http.MethodPost, bytes.NewBufferString("<world>"), http.StatusOK,
+			"Hello, &lt;world&gt;!"},
+		{http.MethodHead, nil, http.StatusMethodNotAllowed, ""},
 	}
 	client := new(http.Client)
 	path := fmt.Sprintf("http://%s/", srv.Addr)
