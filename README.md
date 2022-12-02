@@ -1,4 +1,9 @@
-# Go_Lang_Course
+# Go tests and snippets
+
+A lot of this code comes from books and is a playground to experiment and test, prior to implementation in other repos and production projects.
+thus not all the code is working correctly at all times since these are meant to be failed attempts and rough work.
+
+Topics are broadly focused on algos, networking, DB, distributed systems and pen testing. Go 1.18.3 is required for this repo.
 
 ## Run docker for sql:
 
