@@ -25,9 +25,22 @@ func TestSimpleHTTPServer(t *testing.T){
 	}
 	go func ()  {
 		err := srv.Serve(l)
-		if err != nil {
+		if err != http.ErrServerClosed {
 			t.Error(err)
 		}
 	}()
 
+	testCases := []struct {
+		method string
+		body io.Reader
+		code int
+		response string
+	}{
+		{http.MethodGet, nil, http.StatusOK, "Hello friend!"},
+		{http.MethodPost, bytes.NewBufferString("<world>"), http.StatusMethodNotAllowed, ""},
+	}
+	client := new(http.Client)
+	path := fmt.Sprintf("http://%s/", srv.Addr)
 }
+
+
