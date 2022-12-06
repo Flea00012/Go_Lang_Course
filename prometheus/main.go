@@ -58,6 +58,20 @@ func connStateMetrics(_ net.Conn, state http.ConnState) {
 	}
 }
 
+func setUp()  {
+	tcpAddr, _ := net.ResolveTCPAddr("tcp4", "localhost:8080")
+	conn, err := net.DialTCP("tcp", nil, tcpAddr)
+	if err != nil {
+		log.Panic(err)
+	}
+	var buffer [5]byte
+	i, err := conn.Read(buffer[0:])
+	if err != nil {
+		log.Panic(err)
+	}
+	fmt.Printf("Value returned from the connection: %d ", i)
+}
+
 func main()  {
 	flag.Parse()
 	rand.Seed(time.Now().UnixNano())
