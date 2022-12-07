@@ -1,19 +1,22 @@
 package main
 
 import (
-    "fmt"
-    lib "github.com/libp2p/go-libp2p"
-    "os"
-    "os/signal"
-    "syscall"
-    ecdsa "github.com/libp2p/go-libp2p/core/crypto/ecdsa"
+	"crypto/ecdsa"
+	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
+
+	lib "github.com/libp2p/go-libp2p"
+	ecdsa "github.com/libp2p/go-libp2p/core/crypto"
 )
 
+type pubKey = ecdsa.PublicKey
+type privKey = ecdsa.PrivateKey
 
 type ChatRoom struct {
     roomName string
     Message chan *ChatMessage
-    key lib.MarshalPublicKey
 }
 
 type ChatMessage struct {
@@ -42,6 +45,8 @@ func main() {
     if err := node.Close(); err != nil {
         panic(err)
     }
+
+    
 
    
 }
