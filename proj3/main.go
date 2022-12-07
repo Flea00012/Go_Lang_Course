@@ -2,15 +2,29 @@ package main
 
 import (
     "fmt"
-    "github.com/libp2p/go-libp2p"
+    lib "github.com/libp2p/go-libp2p"
     "os"
     "os/signal"
     "syscall"
+    ecdsa "github.com/libp2p/go-libp2p/core/crypto/ecdsa"
 )
+
+
+type ChatRoom struct {
+    roomName string
+    Message chan *ChatMessage
+    key lib.MarshalPublicKey
+}
+
+type ChatMessage struct {
+    Message string
+    SenderID string
+    SenderNick string
+}
 
 func main() {
     // start a libp2p node with default settings
-    node, err := libp2p.New(libp2p.ListenAddrStrings("/ip4/127.0.0.1/tcp/2000"))
+    node, err := lib.New(lib.ListenAddrStrings("/ip4/127.0.0.1/tcp/2000"))
     if err != nil {
         panic(err)
     }
@@ -28,4 +42,6 @@ func main() {
     if err := node.Close(); err != nil {
         panic(err)
     }
+
+   
 }
