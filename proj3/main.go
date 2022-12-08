@@ -7,16 +7,26 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"fmt"
+	"log"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
-    pubsub "github.com/libp2p/go-libp2p-pubsub"
-	lib "github.com/libp2p/go-libp2p"
+
+	libp2p "github.com/libp2p/go-libp2p"
+	pubsub "github.com/libp2p/go-libp2p-pubsub"
+    "github.com/libp2p/go-libp2p/p2p/discovery/mdns"
+    "github.com/libp2p/go-libp2p/core/peer"
 )
 
 type pubKey = ecdsa.PublicKey
 type privKey = ecdsa.PrivateKey
 
+type localNotifee string
+
+func (l localNotifee) HandlePeerFound(p peer.AddrInfo)  {
+    fmt.Printf("handling the found peer, with notifee: %v", l)
+}
 
 type ChatRoom struct {
     roomName string
@@ -29,9 +39,25 @@ type ChatMessage struct {
     SenderNick string
 }
 
+type ChatServer int
+
+func (c ChatServer) ServeHTTP(w http.ResponseWriter, r *http.Request)  {
+    err := r.ParseForm()
+    if err != nil {
+        log.Fatalln(err)
+    }
+}
+
 func main() {
+    node, err := libp2p.New(libp2p.ListenAddrStrings("/ip4/0.0.0.0/tcp/0"))
+    if err != nil {
+        panic(err)
+    }
 
     ctx := context.Background()
+
+    var chatty ChatServer
+    http.ListenAndServe(":8080", chatty)    
 
     privKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
 	if err != nil {
@@ -50,7 +76,7 @@ func main() {
 	fmt.Println("signature verified: ", verified)
 
     // start a libp2p node with default settings
-    node, err := lib.New(lib.ListenAddrStrings("/ip4/127.0.0.1/tcp/2000"))
+    host, err := libp2p.New(libp2p.ListenAddrStrings("/ip4/127.0.0.1/tcp/2000"))
     if err != nil {
         panic(err)
     }
@@ -58,7 +84,7 @@ func main() {
     // print the node's listening addresses
     fmt.Println("Listen addresses:", node.Addrs())
 
-    ps, err := pubsub.NewGossipSub(ctx, h)
+    pubs , err := pubsub.NewGossipSub(ctx, host)
 	if err != nil {
 		panic(err)
 	}
@@ -73,5 +99,8 @@ func main() {
     if err := node.Close(); err != nil {
         panic(err)
     }
+
+    var l localNotifee
    
+    mdns.NewMdnsService(host, "my server name", l)
 }
