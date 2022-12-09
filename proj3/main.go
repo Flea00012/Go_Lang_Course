@@ -1,4 +1,4 @@
-package main
+package proj3
 
 import (
 	"context"
@@ -88,6 +88,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+    fmt.Println("the pubsub is: ‰v", pubs)
 
     // wait for a SIGINT or SIGTERM signal
     ch := make(chan os.Signal, 1)

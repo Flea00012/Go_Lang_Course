@@ -1,4 +1,4 @@
-package main
+package proj4
 
 import (
 	"bytes"

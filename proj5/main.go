@@ -1,4 +1,4 @@
-package main
+package proj5
 
 import (
 	"fmt"
