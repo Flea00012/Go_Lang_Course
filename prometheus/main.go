@@ -30,6 +30,11 @@ func helloHandler(w http.ResponseWriter, _ *http.Request) {
 	}
 }
 
+func makePromServe(){
+	h := promhttp.Handler()
+	
+}
+
 func newHTTPServer(addr string, mux http.Handler, stateFunc func(net.Conn, http.ConnState)) error {
 	l, err := net.Listen("tcp", addr)
 	if err != nil {
