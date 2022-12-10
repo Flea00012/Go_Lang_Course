@@ -6,10 +6,10 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"fmt"
+	"net/http"
 )
 
 type ChatRoom struct {
-    roomName string
     Message chan *ChatMessage
 }
 
@@ -19,7 +19,14 @@ type ChatMessage struct {
     SenderNick string
 }
 
-type ChatServer int
+type ChatServer struct {
+	room ChatRoom
+	allMessages []ChatMessage
+}
+
+func ServeHTTP(w http.ResponseWriter, res *http.Request)  {
+	fmt.Println("Chat server is up and running")
+}
 
 func GetSignKeys() []byte {
 	privkey, err := ecdsa.GenerateKey(elliptic.P384(), rand.Reader)
