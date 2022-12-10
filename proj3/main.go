@@ -28,19 +28,6 @@ func (l localNotifee) HandlePeerFound(p peer.AddrInfo)  {
     fmt.Printf("handling the found peer, with notifee: %v", l)
 }
 
-type ChatRoom struct {
-    roomName string
-    Message chan *ChatMessage
-}
-
-type ChatMessage struct {
-    Message string
-    SenderID string
-    SenderNick string
-}
-
-type ChatServer int
-
 func (c ChatServer) ServeHTTP(w http.ResponseWriter, r *http.Request)  {
     err := r.ParseForm()
     if err != nil {
@@ -49,6 +36,11 @@ func (c ChatServer) ServeHTTP(w http.ResponseWriter, r *http.Request)  {
 }
 
 func main() {
+    sig := GetSignKeys()
+    if sig == nil {
+        panic("your signature was not generated")
+    }
+
     node, err := libp2p.New(libp2p.ListenAddrStrings("/ip4/0.0.0.0/tcp/0"))
     if err != nil {
         panic(err)
