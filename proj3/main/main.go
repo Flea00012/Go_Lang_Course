@@ -45,6 +45,6 @@ func main() {
 		SenderID:   "minIDkortOchNummer",
 		SenderNick: "mitt name",
 	}
-	fmt.Printf("my message: %s", message)
+	fmt.Printf("my message: %s", message.Message)
 	UDPServer(context.Background(), "/ip4/127.0.0.1/tcp/2000")
 }
