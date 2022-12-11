@@ -1,4 +1,4 @@
-package proj3
+package chatroom
 
 import (
 	"testing"

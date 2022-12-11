@@ -1,13 +1,16 @@
 package proj3
 
 import (
+	
 	"context"
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
 	"crypto/sha256"
+	"example/test/chatroom"
 	"fmt"
 	"net/http"
+
 	libp2p "github.com/libp2p/go-libp2p"
 	pubsub "github.com/libp2p/go-libp2p-pubsub"
 )
@@ -18,7 +21,7 @@ func MakePeerSwarm() {
 		panic(err)
 	}
 	ctx := context.Background()
-	var chatty ChatServer
+	var chatty chatroom.ChatServer
 	http.ListenAndServe(":8080", chatty)
 
 	privKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
@@ -58,11 +61,3 @@ func MakePeerSwarm() {
 	}
 }
 
-// func main() {
-// 	// wait for a SIGINT or SIGTERM signal
-// 	ch := make(chan os.Signal, 1)
-// 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
-// 	<-ch
-// 	fmt.Println("Received signal, shutting down...")
-
-// }

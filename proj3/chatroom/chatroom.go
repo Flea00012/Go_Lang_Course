@@ -1,4 +1,4 @@
-package proj3
+package chatroom
 
 import (
 	"crypto/ecdsa"
@@ -24,7 +24,7 @@ type ChatServer struct {
 	allMessages []ChatMessage
 }
 
-func ServeHTTP(w http.ResponseWriter, res *http.Request)  {
+func (c ChatServer) ServeHTTP(w http.ResponseWriter, res *http.Request)  {
 	fmt.Println("Chat server is up and running")
 }
 
