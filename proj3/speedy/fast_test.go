@@ -2,6 +2,7 @@ package speedy
 
 import (
 	"fmt"
+	// "reflect"
 	"sync"
 	"testing"
 	"time"
@@ -39,9 +40,10 @@ func producerTwo(ch chan int) {
 
 }
 
-func TestXxx(t *testing.T) {
+func TestChannel(t *testing.T) {
 	fmt.Println("testing of the producer routines")
 	ch := make(chan int, 10)
+	defer close(ch)
 	wg.Add(2)
 	go producerOne(ch)
 	go producerTwo(ch)
@@ -49,5 +51,9 @@ func TestXxx(t *testing.T) {
 	fmt.Printf("chan values: %#v\n", ch)
 
 	wg.Wait()
-	close(ch)
+	// expected := [10]int {0,1,2,3,4,10,9,8,7,6}
+	// if !reflect.DeepEqual(ch, expected) {
+	// 	panic("Test for channel failed")
+	// }
+	
 }
