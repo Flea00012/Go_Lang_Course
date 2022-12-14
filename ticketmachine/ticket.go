@@ -5,7 +5,7 @@ import (
 )
 
 const(
-	messageStartPass = iota
+	messagePassStart = iota
 	messageTicketStart
 	messagePassEnd
 	messageTicketEnd
@@ -32,7 +32,7 @@ func (q *Queue) New()  {
 			select {
 			case message = <- q.message:
 				switch message {
-				case messageStartPass:
+				case messagePassStart:
 					
 				}
 			}
