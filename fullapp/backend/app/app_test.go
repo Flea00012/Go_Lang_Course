@@ -37,7 +37,7 @@ func TestApp(t *testing.T) {
 func Test404(t *testing.T) {
 	r := newRouter()
 	mockServer := httptest.NewServer(r)
-	resp, err := http.Post(mockServer.URL + "/hello", "", nil)
+	resp, err := http.Post(mockServer.URL+"/hello", "", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -53,6 +53,13 @@ func Test404(t *testing.T) {
 	respString := string(b)
 	expected := ""
 	if respString != expected {
-		t.Errorf("Response should be %s, got %s instead", expected,respString)
+		t.Errorf("Response should be %s, got %s instead", expected, respString)
 	}
+}
+
+func TestRequest(t *testing.T) {
+	r := newRouter()
+	mockTLSServer := httptest.NewTLSServer(r)
+	req := httptest.NewRequest("POST", mockTLSServer.URL, nil)
+	fmt.Printf("req: %v", req.Body)
 }
