@@ -3,6 +3,7 @@ package fullapp
 import (
 	"fmt"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -69,5 +70,11 @@ func TestResponse(t *testing.T) {
 	mockServer := httptest.NewServer(r)
 	addr := mockServer.Listener.Addr()
 	fmt.Println("address is: ", addr)
+	// var ch chan int
+	go func() {
+		net.Dial("tcp", addr.String())
+		// <- ch
+	}()
 	
+	// defer ch.Close
 }
