@@ -37,3 +37,9 @@ func EchoUDPServer(cxt context.Context, addr string) (net.Addr, error) {
 	defer serv.Close()
 	return serv.LocalAddr(), nil
 }
+
+func Test(t *testing.T) {
+	context.
+	EchoUDPServer()
+
+}

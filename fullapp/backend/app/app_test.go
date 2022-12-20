@@ -63,3 +63,11 @@ func TestRequest(t *testing.T) {
 	req := httptest.NewRequest("POST", mockTLSServer.URL, nil)
 	fmt.Printf("req: %v", req.Body)
 }
+
+func TestResponse(t *testing.T) {
+	r := newRouter()
+	mockServer := httptest.NewServer(r)
+	addr := mockServer.Listener.Addr()
+	fmt.Println("address is: ", addr)
+	
+}
