@@ -59,7 +59,21 @@ func TestNodeInsertion(t *testing.T){
 	}
 }
 
-func TestXxx(t *testing.T) {
+func TestSending(t *testing.T) {
+	a := &Block{
+		name: "blocky",
+		stringPassing: make(chan string),
+		numPassing: make(chan int),
+		left: &Block{},
+		right: &Block{},
+	}
+	a.numPassing <- 1   
+	x := <- a.numPassing         
+	
+	if !reflect.DeepEqual(1, x){
+		fmt.Println("number passed between chans not arrived")
+	}
+	close(a.numPassing)
 
 }
 
