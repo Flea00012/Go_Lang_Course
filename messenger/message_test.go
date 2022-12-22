@@ -22,25 +22,44 @@ func (a *Block) AddNode(b *Block) {
 	if(a.left == nil){
 		a.left = b
 		return
-	} else {
+	} else if (a.right == nil) {
 		a.right = b
 		return
 	}
-	fmt.Printf("node not added")
+	if (a.left.left == nil){
+		a.left.AddNode(b)
+	}
+	a.right.AddNode(b)
+}
+
+func CreateBlockList() []*Block{
+	return make([]*Block, 0)
 }
 
 type BlockList []*Block
 
-func Test(t *testing.T){
+func TestNodeInsertion(t *testing.T){
 	fmt.Println("start tests")
 	n := New()
 	m := New()
 	n.AddNode(m)
+	o := New()
+	n.AddNode(o)
+	p := New()
+	n.AddNode(p)
+	Q := New()
+	n.AddNode(Q)
 
-	if !reflect.DeepEqual(m, n.left) {
+
+	if !reflect.DeepEqual(m, n.left) && !reflect.DeepEqual(o, n.right) {
 		fmt.Println("node added is not the same as leaf node in parent")
 	}
-	
-	
+	if !reflect.DeepEqual(p, n.left.left) && !reflect.DeepEqual(Q, n.right){
+		fmt.Println("recursive insertion failed")
+	}
+}
+
+func TestXxx(t *testing.T) {
+
 }
 
