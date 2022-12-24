@@ -67,8 +67,8 @@ func TestSending(t *testing.T) {
 		left: &Block{},
 		right: &Block{},
 	}
-	defer close(a.numPassing)
-	defer close(a.stringPassing)
+	// defer close(a.numPassing)
+	// defer close(a.stringPassing)
 	
 	go func() {
 		a.numPassing <- 1
@@ -84,5 +84,27 @@ func TestSending(t *testing.T) {
 		fmt.Println("failed to pass the string")
 	}
 
+}
+
+func TestChans2(t *testing.T) {
+	a := New()
+	b := New()
+	a.numPassing = make(chan int)
+	b.numPassing = make(chan int)
+	b.AddNode(a)
+	var v int
+
+	go func ()  {
+		b.numPassing <- 1
+		v++
+	}()
+	go func ()  {
+		a.numPassing <- 1
+		v++
+	}()
+
+	if !reflect.DeepEqual(2, (<- a.numPassing + <- b.numPassing)){
+		fmt.Println("failed to pass the number")
+	}
 }
 
