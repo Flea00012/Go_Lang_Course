@@ -67,14 +67,22 @@ func TestSending(t *testing.T) {
 		left: &Block{},
 		right: &Block{},
 	}
+	defer close(a.numPassing)
+	defer close(a.stringPassing)
+	
 	go func() {
 		a.numPassing <- 1
-	}()       
-	
+	}()    
+	go func()  {
+		a.stringPassing <- "my text"
+	}()
+
 	if !reflect.DeepEqual(1, <-a.numPassing){
 		fmt.Println("failed to pass the number")
 	}
-	close(a.numPassing)
+	if !reflect.DeepEqual("my text", <-a.stringPassing){
+		fmt.Println("failed to pass the string")
+	}
 
 }
 
