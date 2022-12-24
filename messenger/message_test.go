@@ -67,11 +67,12 @@ func TestSending(t *testing.T) {
 		left: &Block{},
 		right: &Block{},
 	}
-	a.numPassing <- 1   
-	x := <- a.numPassing         
+	go func() {
+		a.numPassing <- 1
+	}()       
 	
-	if !reflect.DeepEqual(1, x){
-		fmt.Println("number passed between chans not arrived")
+	if !reflect.DeepEqual(1, <-a.numPassing){
+		fmt.Println("failed to pass the number")
 	}
 	close(a.numPassing)
 
