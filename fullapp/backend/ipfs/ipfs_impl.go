@@ -4,14 +4,25 @@ import (
 	// "bytes"
 	"fmt"
 	"os"
+
 	"strings"
 
 	shell "github.com/ipfs/go-ipfs-api"
 )
 
 func main() {
-	// Where your local node is running on localhost:5001
-	sh := shell.NewShell("localhost:5001")
+	sh := shell.NewLocalShell()
+	info, err := sh.ID()
+	if err != nil {
+		fmt.Println("failed to get info about local node")
+	}
+	for i := range info.Addresses {
+		fmt.Printf("The id: %s, for address: %s has publickey: %s", info.ID, info.Addresses[i], info.PublicKey)
+		
+	}
+
+	
+
 	cid, err := sh.Add(strings.NewReader("hello world!"))
 	if err != nil {
         fmt.Fprintf(os.Stderr, "error: %s", err)
