@@ -10,9 +10,35 @@ import (
 	shell "github.com/ipfs/go-ipfs-api"
 )
 
-func main() {
-	sh := shell.NewLocalShell()
-	info, err := sh.ID()
+// func main() {
+// 	sh := shell.NewLocalShell()
+// 	info, err := sh.ID()
+// 	if err != nil {
+// 		fmt.Println("failed to get info about local node")
+// 	}
+// 	for i := range info.Addresses {
+// 		fmt.Printf("The id: %s, for address: %s has publickey: %s", info.ID, info.Addresses[i], info.PublicKey)
+		
+// 	}
+
+	
+
+// 	cid, err := sh.Add(strings.NewReader("hello world!"))
+// 	if err != nil {
+//         fmt.Fprintf(os.Stderr, "error: %s", err)
+//         os.Exit(1)
+// 	}
+//     fmt.Printf("added %s", cid)
+// }
+
+type Shell *shell.Shell
+
+func connectToIPFS() *shell.Shell {
+	return shell.NewLocalShell()
+}
+
+func (s *shell.Shell) getInfo() {
+	info, err := s.ID()
 	if err != nil {
 		fmt.Println("failed to get info about local node")
 	}
@@ -20,20 +46,7 @@ func main() {
 		fmt.Printf("The id: %s, for address: %s has publickey: %s", info.ID, info.Addresses[i], info.PublicKey)
 		
 	}
-
-	
-
-	cid, err := sh.Add(strings.NewReader("hello world!"))
-	if err != nil {
-        fmt.Fprintf(os.Stderr, "error: %s", err)
-        os.Exit(1)
-	}
-    fmt.Printf("added %s", cid)
 }
-
-// func connectToIPFS() *shell.Shell {
-// 	return shell.NewShell("localhost:5001")
-// }
 
 // func (sh *shell.Shell) addToIPFS() {
 // 	cid, err := s.Add(strings.NewReader("hello world!"))
