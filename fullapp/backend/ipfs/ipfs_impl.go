@@ -4,11 +4,18 @@ import (
 	// "bytes"
 	"fmt"
 	"os"
-
 	"strings"
-
-	shell "github.com/ipfs/go-ipfs-api"
+	"github.com/ipfs/go-ipfs-api"
 )
+
+
+func StartUp() {
+	id := os.Getpid()
+	fmt.Print("I am caller with id: %d. Lets get started", id)
+	shell := shell.NewLocalShell()
+
+	fmt.Printf("the shell is: %s", shell)
+}
 
 // func main() {
 // 	sh := shell.NewLocalShell()
@@ -30,8 +37,6 @@ import (
 // 	}
 //     fmt.Printf("added %s", cid)
 // }
-
-type Shell *shell.Shell
 
 func connectToIPFS() *shell.Shell {
 	return shell.NewLocalShell()
