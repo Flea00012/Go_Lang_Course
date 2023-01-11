@@ -4,8 +4,8 @@ import (
 	// "bytes"
 	"fmt"
 	"os"
-	"strings"
 	"github.com/ipfs/go-ipfs-api"
+	"time"
 )
 
 
@@ -13,6 +13,7 @@ func StartUp() {
 	id := os.Getpid()
 	fmt.Print("I am caller with id: %d. Lets get started", id)
 	shell := shell.NewLocalShell()
+	shell.SetTimeout(time.Second * 15)
 
 	fmt.Printf("the shell is: %s", shell)
 }
