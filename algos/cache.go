@@ -20,6 +20,7 @@ func (cacheObject CacheObject) IfExpired() bool {
 type Cache struct {
 	objects map[string]CacheObject
 	mutex   *sync.RWMutex
+
 }
 
 func NewCache() *Cache {

@@ -22,6 +22,15 @@ func TestCache(t *testing.T) {
 		}()
 	}
 
+	for i := 0; i <= 6; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			s := "name-" + strconv.Itoa(i)
+			cache.SetValue(s, "john smith-"+strconv.Itoa(i), 200000000)
+		}()
+	}
+
 	wg.Wait()
 
 	var name string
