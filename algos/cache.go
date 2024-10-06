@@ -20,13 +20,16 @@ func (cacheObject CacheObject) IfExpired() bool {
 type Cache struct {
 	objects map[string]CacheObject
 	mutex   *sync.RWMutex
-
+	queue   []CacheObject
+	size    int
 }
 
-func NewCache() *Cache {
+func NewCache(i int) *Cache {
 	return &Cache{
 		objects: make(map[string]CacheObject),
 		mutex:   &sync.RWMutex{},
+		queue:   make([]CacheObject, i),
+		size:    i,
 	}
 }
 
@@ -39,14 +42,19 @@ func (cache Cache) GetObject(cacheKey string) string {
 		delete(cache.objects, cacheKey)
 		return ""
 	}
+	cache.queue = append(cache.queue, object)
 	return object.Value
 }
 
 func (cache Cache) SetValue(cacheKey string, cacheValue string, timeToLive time.Duration) {
 	cache.mutex.Lock()
 	defer cache.mutex.Unlock()
-	cache.objects[cacheKey] = CacheObject{
-		Value:      cacheValue,
-		TimeToLive: time.Now().Add(timeToLive).UnixNano(),
+	for len(cache.objects) < cache.size {
+		c := CacheObject{
+			Value:      cacheValue,
+			TimeToLive: time.Now().Add(timeToLive).UnixNano(),
+		}
+		cache.objects[cacheKey] = c
+		cache.queue = append(cache.queue, c)
 	}
 }
