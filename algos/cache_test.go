@@ -11,9 +11,9 @@ import (
 func TestCache(t *testing.T) {
 	var wg sync.WaitGroup
 	var cache *Cache
-	cache = NewCache()
+	cache = NewCache(5)
 
-	for i := 0; i <= 6; i++ {
+	for i := 0; i <= 3; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
@@ -22,7 +22,7 @@ func TestCache(t *testing.T) {
 		}()
 	}
 
-	for i := 0; i <= 6; i++ {
+	for i := 0; i <= 2; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
@@ -36,6 +36,6 @@ func TestCache(t *testing.T) {
 	var name string
 	name = cache.GetObject("name-1")
 	assert.Equal(t, "john smith-1", name)
-	name = cache.GetObject("name-6")
-	assert.Equal(t, "john smith-6", name)
+	name = cache.GetObject("name-4")
+	assert.Equal(t, "john smith-4", name)
 }
